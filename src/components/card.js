@@ -1,21 +1,15 @@
 import { useContext } from "react";
 import Choices from "./choices";
 import GameContext from "./game";
-
+import score from "../util";
 const Card = () => {
-  const {
-    gamedata,
-    answered,
-    setAnswer,
-    counter,
-    useCounter,
-    setGamedata
-  } = useContext(GameContext);
-  // console.log(gamedata);
+  const { gamedata, counter, useCounter, setGamedata } = useContext(
+    GameContext
+  );
 
   const handleClick = () => {
     useCounter({
-      type: "NEXT"
+      type: "NEXT",
     });
   };
 
@@ -26,14 +20,20 @@ const Card = () => {
         <Choices
           options={gamedata[counter.count].options}
           question={gamedata[counter.count]}
-          property={{ answered, setAnswer, setGamedata }}
+          property={{ setGamedata }}
         />
         <button onClick={handleClick}>Next</button>
       </>
     );
   } else {
     console.log(gamedata);
-    return <h1>THE END</h1>;
+    const finalScore = score(gamedata);
+    return (
+      <>
+        <h1>THE END</h1>
+        Score: {finalScore.score}/{finalScore.total}
+      </>
+    );
   }
 };
 
