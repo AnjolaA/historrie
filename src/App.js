@@ -19,6 +19,30 @@ function reducer(state, action) {
   }
 }
 
+function reducerEdu(state, action) {
+  switch (action.type) {
+    case "SELECT":
+      let location = state.findIndex((item) => item.qid === action.question);
+      let newStateArray = [...state];
+      newStateArray[location] = {
+        ...newStateArray[location],
+        choice: action.choice,
+      };
+      return [...newStateArray];
+    case "CHECK":
+      let locationn = state.findIndex(
+        (item) => item.qid === action.question.qid
+      );
+      let nnewStateArray = [...state];
+      nnewStateArray[locationn] = {
+        ...nnewStateArray[locationn],
+        answered: true,
+      };
+      return [...nnewStateArray];
+    default:
+      return state;
+  }
+}
 const reducerNext = (state, action) => {
   switch (action.type) {
     case "NEXT":
@@ -31,6 +55,7 @@ const reducerNext = (state, action) => {
 const config = { count: 0, end: 10 };
 export default function App() {
   const [gamedata, setGamedata] = useReducer(reducer, data);
+  const [edudata, setEdudata] = useReducer(reducerEdu, data);
   const [counter, useCounter] = useReducer(reducerNext, config);
 
   return (
@@ -40,6 +65,8 @@ export default function App() {
         setGamedata,
         counter,
         useCounter,
+        edudata,
+        setEdudata,
       }}
     >
       <GameBoard />
